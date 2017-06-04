@@ -1,7 +1,9 @@
 const { ipcRenderer } = require('electron')
 
-var themes;
+var themes = new Array();
 var currentlySelected;
+
+var currentThemePath;
 
 //Send a request theme
 ipcRenderer.send('requestThemes', {});
@@ -9,6 +11,19 @@ ipcRenderer.send('requestThemes', {});
 var requestThemesCall = function(event, args) {
     themes = args;
     requestedThemesSuccessful();
+}
+
+var requestThemeCall = function(event, args) {
+    currentThemePath = args;
+    swapStyleSheet(args);
+}
+
+var swapStyleSheet = function(folder) {
+    document.getElementById("index-style-sheet").setAttribute("href", folder + "index-style-sheet.css");
+}
+
+var updateTheme = function() {
+    document.getElementById("index-style-sheet").setAttribute("href", currentThemePath + "index-style-sheet.css");
 }
 
 var requestedThemesSuccessful = function() {
@@ -39,8 +54,13 @@ var createDocumentElements = function() {
 }
 
 var themeClickButton = function(radioButton) {
-    //alert(radioButton.value);
-    //todo: when the user clicks a radio button, get the appropriate theme materials
+    currentlySelected = radioButton.value;
+    ipcRenderer.send('requestTheme', radioButton.value);
+}
+
+var changeTheme = function() {
+
 }
 
 ipcRenderer.on('themesResponse', requestThemesCall);
+ipcRenderer.on('themeResponse', requestThemeCall);

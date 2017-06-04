@@ -2,9 +2,9 @@ const theme = require('./theme/theme-system');
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const url = require('url');
-const { ipcMain } = require('electron')
+const { ipcMain } = require('electron');
 
-const storageFolder = './electron-theme-system/';
+const storageFolder = app.getPath('userData');
 const fs = require("fs");
 
 let browserWindow;
@@ -22,7 +22,7 @@ function createWindow() {
     }
 
     //Initialises the theme system
-    theme.initialiseThemeSystem();
+    theme.initialiseThemeSystem(app.getPath('userData'));
 
     browserWindow.setMenu(null);
 
@@ -40,11 +40,13 @@ function createWindow() {
 }
 
 var sendThemes = function(event, args) {
-    console.log('themes requested');
     event.sender.send('themesResponse', theme.allThemes);
 }
 
-ipcMain.on('requestThemes', sendThemes);
+var sendTheme = function(event, args) {
+    console.log('theme requested = ' + args);
+    event.sender.send('themeResponse', theme.getThemeFolder(args));
+}
 
 app.on('ready', createWindow);
 
@@ -59,3 +61,8 @@ app.on('activate', () => {
         createWindow();
     }
 });
+
+
+
+ipcMain.on('requestThemes', sendThemes);
+ipcMain.on('requestTheme', sendTheme);

@@ -1,0 +1,21 @@
+body {
+    background-color: #EBEDF9;
+    font-family: Sans-serif;
+}
+
+hr {
+    border: 0;
+    border-bottom: 1px solid #D2D9E0;
+}
+
+button#updateTheme {
+    background-color: #0CC440;
+    border: 0;
+    border-bottom: 2px solid #009C18;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: #fff;
+    font-size: 1.1em;
+}
