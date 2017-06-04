@@ -2,6 +2,7 @@ const theme = require('./theme/theme-system');
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const url = require('url');
+const { ipcMain } = require('electron')
 
 const storageFolder = './electron-theme-system/';
 const fs = require("fs");
@@ -37,6 +38,13 @@ function createWindow() {
         browserWindow = null
     });
 }
+
+var sendThemes = function(event, args) {
+    console.log('themes requested');
+    event.sender.send('themesResponse', theme.allThemes);
+}
+
+ipcMain.on('requestThemes', sendThemes);
 
 app.on('ready', createWindow);
 
