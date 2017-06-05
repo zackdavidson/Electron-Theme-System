@@ -4,7 +4,11 @@
     "description": "This is just a module for creating a custom theme system, This will be implemented to Tabula Board",
     "main": "app/app.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "start": "electron .",
+        "build-all": "npm run build-win && npm run build-mac && npm run build-linux",
+        "build-win": "electron-packager . --overwrite ETS --asar=true --platform=win32 --arch=ia32 --out=releases --prunt=true",
+        "build-mac": "electron-packager . --overwrite ETS --platform=darwin --arch=x64 --out=releases --prunt=true",
+        "build-linux": "electron-packager . --overwrite ETS --platform=linux --arch=x64 --out=releases --prunt=true"
     },
     "repository": {
         "type": "git",
@@ -19,5 +23,8 @@
     "dependencies": {
         "electron": "^1.6.10",
         "electron-storage": "^1.0.7"
+    },
+    "devDependencies": {
+        "electron-packager": "^8.7.0"
     }
 }
